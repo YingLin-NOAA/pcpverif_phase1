@@ -68,8 +68,8 @@ fv3gfs3h|      |   |000|/gpfs/dell1/nco/ops/com/gfs/para/gfs._DAY_/%{cyc}%/gfs.t
 fv3gfs6h|      |   |000|/gpfs/dell1/nco/ops/com/gfs/para/gfs._DAY_/%{cyc}%/gfs.t%{cyc}%z.pgrb2.0p25.f%{fhr}%|_DAY_/fv3gfs_|00 06 12 18|03|180|03|06|grb2
 wgnegfs|      |   |000|/gpfs/dell1/nco/ops/com/gfs/para/gfs._DAY_/%{cyc}%/gfs.t%{cyc}%z.pgrb2.0p25.f%{fhr}%|_DAY_/wgnegfs_|00 06 12 18|03|180|03|999|grb2
 fv3sarda|      |   |000|/gpfs/dell2/ptmp/Eric.Rogers/com/fv3sar/para/fv3sar._DAY_/%{cyc}%/fv3sar.t%{cyc}%z.conus.f%{fhr}%.grib2|_DAY_/fv3sarda_|00 12|01|60|01|01|grb2
-fv3sar|      |   |000|/ptmpp2/Benjamin.Blake/com/fv3cam/para/fv3sar._DAY_/%{cyc}%/fv3sar.t%{cyc}%z.conus.f%{fhr}%.grib2|_DAY_/fv3sar_|00|01|60|01|01|grb2
-fv3sarx|      |   |000|/ptmpp2/Eric.Rogers/com/fv3cam/para/fv3sar._DAY_/%{cyc}%/fv3sar.t%{cyc}%z.conus.f%{fhr}%.grib2|_DAY_/fv3sarx_|00|01|60|01|01|grb2
+fv3sar|      |   |000|/ptmpp2/Benjamin.Blake/com/fv3cam/para/fv3sar._DAY_/%{cyc}%/fv3sar.t%{cyc}%z.conus.f%{fhr}%.grib2|_DAY_/fv3sar_|00 12|01|60|01|01|grb2
+fv3sarx|      |   |000|/ptmpp2/Eric.Rogers/com/fv3cam/para/fv3sar._DAY_/%{cyc}%/fv3sar.t%{cyc}%z.conus.f%{fhr}%.grib2|_DAY_/fv3sarx_|00 12|01|60|01|01|grb2
 fv3nest|      |   |000|/gpfs/dell1/ptmp/emc.campara/com/fv3cam/para/fv3nest._DAY_/%{cyc}%/fv3nest.t%{cyc}%z.conus.f%{fhr}%.grib2|_DAY_/fv3nest_|00|01|60|01|01|grb2
 nam|          |   |000|/com2/nam/prod/nam._DAY_/nam.t%{cyc}%z.bgrdsf%{fhr}%.tm00|_DAY_/nam_|00 06 12 18|03|84|03|888|grb2
 conusnest|     |   |000|/com2/nam/prod/nam._DAY_/nam.t%{cyc}%z.conusnest.hiresf%{fhr}%.tm00.grib2|_DAY_/conusnest_|00 06 12 18|03|60|03|03|grb2

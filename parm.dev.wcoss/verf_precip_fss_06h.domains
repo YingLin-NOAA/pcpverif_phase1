@@ -21,8 +21,8 @@ gfs|00 06 12 18|03|84|altcomin
 gfsv14|00 06 12 18|03|180|
 fv3gfs|00 06 12 18|06|180|
 fv3nest|00|01|60|
-fv3sar|00|01|60|
-fv3sarx|00|01|60|
+fv3sar|00 12|01|60|
+fv3sarx|00 12|01|60|
 fv3sarda|00 12|01|60|
 conusnest|00 06 12 18|03|60|altcomin
 conusnestx|00 06 12 18|03|60|
