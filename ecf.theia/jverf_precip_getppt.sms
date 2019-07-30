@@ -1,0 +1,72 @@
+#!/bin/ksh -l
+#PBS -o /scratch2/portfolios/NCEPDEV/ptmp/Ying.Lin/output.crons/getppt.out
+#PBS -j oe
+#PBS -N getppt
+#PBS -A rm
+#PBS -l procs=1
+#PBS -l vmem=1000M
+#PBS -l walltime=0:25:00
+cd $PBS_O_WORKDIR
+
+set -x 
+export envir=dev
+export cyc=00
+export job=verf_precip_getppt
+export RUN_ENVIR=dev
+export retro=N
+export debug=N
+
+export HOMEverf_precip=/scratch2/portfolios/NCEPDEV/meso/save/$LOGNAME/verif/nextjif
+export DATAverf_precip=/scratch2/portfolios/NCEPDEV/ptmp/$LOGNAME/verf.dat
+export WRKDIR=/scratch2/portfolios/NCEPDEV/stmp/$LOGNAME/tmpnwprd
+
+# Rename PBS output, otherwise it gets appended to the prev day's output file:
+PBSODIR=/scratch2/portfolios/NCEPDEV/ptmp/Ying.Lin/output.crons
+timestamp=`date +%Y%m%d%H%M`
+mv $PBSODIR/getppt.out $PBSODIR/getppt.$timestamp
+
+# Specify 'nwprod' for Zeus:
+export NWPROD=/scratch2/portfolios/NCEPDEV/rstprod/nwprod
+
+# Zeus does not have a working /nwprod/util/exec/ndate.
+export ndate=/scratch2/portfolios/NCEPDEV/meso/save/Eric.Rogers/nwprod/exec/ndate
+
+# Zeus's /nwprod/util/exec/wgrib does not work.  
+export WGRIBpath=/scratch2/portfolios/NCEPDEV/meso/save/Eric.Rogers/nwprod_LE/exec
+
+# This script has three optional arguments if run interactively.  WCOSS LSF 
+# (bsub) does not accept arguments in the LSF script, in that case, set up
+# up as environmental variables.  To make this thing more flexible, arg 2 
+# and/or 3 can be either 'debug' or 'retro'.  
+#   arg 1:   vday=yyyymmdd (if no arg 1, $daym1 is used in J-job)
+#   arg 2/3: retro (default: no retro).  Use parm/verf_precip_ppt_config.retro?
+#   arg 3/2: debug (default: no debug.  In debug mode, do not delete the 
+#            working directory)
+
+if [ $# -ge 1 ]; then
+  export vday=$1
+fi
+
+if [ $# -ge 2 ]; then
+  if [ $2 = retro ]; then
+    retro=Y
+  elif [ $2 = debug ]; then
+    debug=Y
+  fi
+fi
+
+if [ $# -ge 3 ]; then
+  if [ $3 = retro ]; then
+    retro=Y
+  elif [ $3 = debug ]; then
+    debug=Y
+  fi
+fi
+
+# So that the script can find the 'postmsg','startmsg' etc. in the current dir:
+export PATH=$PATH:.
+
+$HOMEverf_precip/jobs/JVERF_PRECIP_GETPPT
+
+
+

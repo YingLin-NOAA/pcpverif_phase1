@@ -1,0 +1,9 @@
+export run_gfs=0
+export run_nam=1
+export run_conusnest=0
+export run_eastnmm=0
+export run_eastarw=0
+export run_westnmm=0
+export run_westarw=0
+export run_rap=0
+export run_namx=0

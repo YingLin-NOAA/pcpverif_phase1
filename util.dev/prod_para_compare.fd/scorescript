@@ -1,0 +1,106 @@
+#!/bin/ksh
+set -x
+
+# set up FVS paths:
+#
+# . ~/.bash_profile
+# This step is not needed when running interactively.  We only need to invoke
+# .bash_profile explicitly when running the script in cron.  Prior to 
+# 14 Aug 2013, we used to have ". ~/.bash_profile" within this script in 
+# order to run "scorescript" in cron.  This somehow stopped working on either 
+# Tide or Gyre) after 14 Aug 2013 - invoking .bash_profile within this ksh 
+# script apparently is no longer kosher.  We are now invoking the bash_profile
+# in cron, i.e. with 
+#   30 11 * * * /u/Ying.Lin/.bash_profile; /meso/save/Ying.Lin/routine.jobs/pscore.cron/scorescript
+# 
+
+export VSDB_DATA=/stmpp1/Ying.Lin/vsdb.compare
+day1=20170219
+day2=20170308
+
+# get ZROOT:
+. ~/.profile
+
+# Location of this script and the sub-scripts:
+PSCORE=$ZROOT/routine.jobs/pscore.cron
+
+/nwprod/gempak/nawips1/bin/cleanup
+
+wrkdir=/stmpp1/Ying.Lin/pscore.compare
+
+if [ -d $wrkdir ]; then
+  rm -rf $wrkdir/*
+else
+  mkdir -p $wrkdir
+fi
+cd $wrkdir
+
+#
+# generate 24h plots:
+#
+# NAM,GFS,CONUSNEST scores, in prod and in para:
+# 
+rm -f plot.ps
+$PSCORE/pscore_24h "ps|plot.ps|8.5;11|c" "NAM GFS CONUSNEST" 218 \
+   "24 36 48 60" $day1 $day2 RFC
+convert -flatten plot.ps nam.gfs.conusnest.24h.gif
+#
+rm -f plot.ps
+$PSCORE/pscore_24h "ps|plot.ps|8.5;11|c" "NAMV GFSV CONUSNESTV" 218 \
+   "24 36 48 60" $day1 $day2 RFC
+convert -flatten plot.ps namv.gfsv.conusnestv.24h.gif
+#
+
+# NAM,GFS,NAMV,GFSV:
+rm -f plot.ps
+$PSCORE/pscore_24h "ps|plot.ps|8.5;11|c" "NAM NAMV GFS GFSV" 212 \
+   "24 36 48 60 72 84" $day1 $day2 RFC
+convert -flatten plot.ps nam.gfs.24h.gif
+
+# CMC models (no cmc regional in prod)
+rm -f plot.ps
+$PSCORE/pscore_24h "ps|plot.ps|8.5;11|c" "CMCV CMCGLB CMCGLBV" 212 \
+   "24 36 48" $day1 $day2 RFC
+convert -flatten plot.ps cmc.gif
+
+# Now make FSS 24h plots:
+# Note that threshold needs to be exactly as it appears in VSDB, so 10mm is
+# "010.0".  
+
+for tmm in 10 25
+do
+  rm -f plot.ps
+  thresh=0${tmm}.0
+  $PSCORE/pscore_fss "ps|plot.ps|4;3|c" \
+    "NAM GFS CONUSNEST NAMV GFSV CONUSNESTV" \
+    "24 48" $day1 $day2 240 CNS $thresh
+  convert -rotate +90 -flatten plot.ps fss24h.${tmm}mm.gif
+done
+
+
+# 3-hourly NAM/GFS/CONUSNEST/CONUSNMMB/CONUSARW/HRRR verifications, to $daym1:
+#
+rm -f plot.ps
+$PSCORE/pscore_3hr_fcsttime "ps|plot.ps|8.5;11|c" \
+    "NAM GFS CONUSNEST" 218 0.1 $day1 $day2 RFC
+convert -flatten plot.ps 3hr_eqt_bias.gif
+
+rm -f plot.ps
+$PSCORE/pscore_3hr_fcsttime "ps|plot.ps|8.5;11|c" \
+    "NAMV GFSV CONUSNESTV" 218 0.1 $day1 $day2 RFC
+convert -flatten plot.ps 3hrv_eqt_biasv.gif
+#
+# Domain-averaged 3-hourly precip vs. forecast time, for the 12Z cycle
+# 
+rm -f plot.ps
+$PSCORE/pscore_avgpcp_multicyc "ps|plot.ps|11;8.5|c" \
+  "NAM GFS CONUSNEST CONUSNMMB CONUSARW HRRR" 12 $day1 $day2 RFC
+convert -flatten -rotate +90 plot.ps conus_avg.12z_cyc.gif
+
+rm -f plot.ps
+$PSCORE/pscore_avgpcp_multicyc "ps|plot.ps|11;8.5|c" \
+  "NAMV GFSV CONUSNESTV CONUSNMMBV CONUSARWV HRRRV" 12 $day1 $day2 RFC
+convert -flatten -rotate +90 plot.ps conus_avg.12z_cycv.gif
+
+exit
+

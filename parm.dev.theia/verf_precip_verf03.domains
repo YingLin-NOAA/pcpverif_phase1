@@ -1,0 +1,41 @@
+####################################################################################################
+# This data input card defines the input variables for the script to process the 24-hourly model
+# verification, where the
+#   1st entry: Model Name
+#   2nd entry: Verification length (03h)
+#   3rd entry: Verification grid(s)
+#   4th entry: Verification cycles
+#   5th entry: Precipitation bucket length
+#   6th entry: The model forecast range that is used for the verification
+#   7th entry: Nests
+#
+# Note: if you need to add a new model, please add it to the end of this file.
+#####################################################################################################
+#=========================================
+#model|vlen|grids|cycles|blen|frange|nests
+#=========================================
+gfs|3|218|00 06 12 18|6|84|
+gfs|3|218|06|6|48|west
+gfs|3|218|00 12|6|48|east
+eastnmm|3|218|00 12|3|48|east
+eastnmm|3|218|00 12|3|48
+eastarw|3|218|00 12|3|48|east
+eastarw|3|218|00 12|3|48
+westnmm|3|218|06|3|48|west
+westnmm|3|218|06|3|48
+westarw|3|218|06|3|48|west
+westarw|3|218|06|3|48
+nam|3|218|00 12|12|84|
+nam|3|218|06 18|3|84|
+nam|3|218|00|12|48|west
+nam|3|218|06|3|48|west
+nam|3|218|00 12|12|48|east
+nam|3|218|18|3|48|east
+conusnest|3|218|00 06 12 18|03|60
+conusnest|3|218|00 12|03|48|east
+conusnest|3|218|06|03|48|west
+namexp|3|218|00 12|3|84|
+namr|3|218|00 12|3|84|
+namx|3|218|00 12|3|84|
+namy|3|218|00 12|3|84|
+rap|3|218|00 03 06 09 12 15 18 21|03|18|

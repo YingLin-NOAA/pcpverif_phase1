@@ -1,0 +1,221 @@
+#!/bin/ksh
+set -x
+
+# ###################################
+# SET SHELL PROCESSING VARIABLES
+# ###################################
+export PS4='$SECONDS + ' 
+date
+
+#################################################################
+#  Scripts are modified to be sharable
+#    between EMC and NCO
+#         Please note that variable "RUN_ENVIR" is set and used
+#         in the development enviroment only.
+#################################################################
+
+export machine=${machine:-wcoss}
+export RUN_ENVIR=${RUN_ENVIR:-prod}
+export SENDECF=${SENDECF:-YES}
+
+# vacc, vgrid and region are used in VSDB output. 
+export vacc=06    # 6-hourly FSS verification
+export vgrid=240  # verif done on HRAP grid
+export region=CNS # ConUS
+
+#################################################################
+# Notes for dev:
+#
+# verf_precip_config contains exports such as
+#   export HOMEverf_precip=/nw{envir} (for prod; dev defines this in ecf script)
+#   export EXECverf_precip=$HOMEverf_precip/exec
+#   export PARMverf_precip=$HOMEverf_precip/parm
+#              ...
+#   export SENDCOM= ...
+#   export SENDECF= ...
+#   export SENDDBN= ...
+#   export SENDRZDM= ... 
+#     ... 
+# Machine is wcoss by default, unless the calling script or user's 
+# .cshrc/.profile has machine set to zeus.
+#################################################################
+
+# export VERFANL so fss.f knows what analysis to put into the VSDB record.
+export VERFANL=CCPA 
+if [ "$RUN_ENVIR" = dev ]    ### For Developers
+then
+  # PARMverf_precip is set in the ecf/sms script.  It is either 'parm' or
+  # parm.dev.$machine, under $HOMEverf_precip.  
+  . $PARMverf_precip/verf_precip_config
+  export DATAROOT=${DATAROOT:-/tmpnwprd2}
+  export jlogfile=${jlogfile:-$DATAROOT/jlogfile}
+  export SENDDBN=NO
+  if [ $debug = N ]; then
+    RM_DATA=YES
+  else
+    RM_DATA=NO
+  fi
+fi
+
+###############################################################
+# This block can be modified for different Production test
+# environment. This is used for operational testings
+###############################################################
+if [ $RUN_ENVIR = "prod" -a $envir != "prod" ]   ### For Operations
+then
+   export SENDDBN=${SENDDBN:-YES}
+   export jlogfile=${jlogfile:-/com/logs/${envir}/jlogfile}
+   export DBNROOT=/nwprod/spa_util/fakedbn
+   export DBNLOG=${DBNLOG:-YES}
+   export DATAROOT=${DATAROOT:-/tmpnwprd2}
+fi
+
+###########################################################
+# obtain unique process id (pid) and make temp directories
+###########################################################
+export pid=$$
+export RM_DATA=${RM_DATA:-YES};
+export DATAROOT=${DATAROOT:-/tmpnwprd1}
+export DATA=$DATAROOT/${job}.${pid}
+mkdir -p $DATA
+cd $DATA 
+
+####################################
+# File To Log Msgs
+####################################
+export jlogfile=${jlogfile:-/com/logs/jlogfiles/jlogfile.${job}.${pid}}
+
+####################################
+# Determine Job Output Name on System
+####################################
+export outid="LL$job"
+export jobid="${outid}.o${pid}"
+export pgmout="OUTPUT.${pid}"
+export cycle=t${cyc}z 
+
+###############################
+# Specify NET and RUN name
+###############################
+export NET=verf
+export RUN=precip
+
+################################################################
+# SENDCOM=YES--Copy output file to /com
+# SENDECF=YES--Allow to talk back to ECF
+# SENDDBN=YES--Alert output file to TOC, set to NO for testing
+################################################################
+export SENDCOM=${SENDCOM:-YES}
+export SENDDBN=${SENDDBN:-YES}       # need to set to NO for testing only
+export SENDECF=${SENDECF:-YES}
+export SENDRZDM=${SENDRZDM:-NO}      # for daily side-by-side plots
+
+################################################################
+# Specify Execution Areas
+# Non-dev uses the follwing block instead of parm/verf_precip_config
+################################################################
+export HOMEverf_precip=${HOMEverf_precip:-/nw${envir}/verf_precip.${verf_precip_ver}}
+export EXECverf_precip=${EXECverf_precip:-$HOMEverf_precip/exec}
+export PARMverf_precip=${PARMverf_precip:-$HOMEverf_precip/parm}
+export USHverf_precip=${USHverf_precip:-$HOMEverf_precip/ush}
+export FIXverf_precip=${FIXverf_precip:-$HOMEverf_precip/fix}
+
+###################################
+# Set up the UTILITIES
+###################################
+# -----------------  Note for Dev -----------------------------------
+# Zeus' /nwprod is acutally in /scratch2/portfolios/NCEPDEV/rstprod/nwprod. 
+# need to define EXECutil for wwgrib.  It is normally the same as 
+# /nwprod/util/exec, but Zeus does not have a working /nwprod/util/exec/wgrib.
+# WGRIBpath is defined in the Zeus sms script. 
+# -------------------------------------------------------------------
+export NWPROD=${NWPROD:-/nwprod}
+export utilscript=$NWPROD/util/ush
+export utilexec=$NWPROD/util/exec
+
+export EXECutil=${WGRIBpath:-$utilexec}
+
+export ndate=${ndate:-$utilexec/ndate}
+export finddate=$utilscript/finddate.sh
+export copygb=${copygb:-$utilexec/copygb}
+
+# If the calling script specifies a $vday value, then PDY=$vday+9.
+if [ "$vday" != "" ]; then
+  PDY=`$finddate $vday d+9`
+fi
+
+# /com/date is maintained by NCO on the CCS and WCOSS, but it does not exist 
+#   on Theia.  Do not use setpdy on Zeus.  
+if [ "$machine" = theia ]; then 
+  today=`date -u +%Y%m%d`  
+  PDYm9=`$finddate $today d-9`
+else
+  # Run setpdy and initialize PDY variables
+  setpdy.sh
+  . PDY
+  # setpdy only sets PDYM7-PDYP7 (the script 'PDY' exports these days), so
+  # we need to set PDYm9 ourselves.
+  PDYm9=`$finddate $PDY d-9`
+fi
+
+export vday=${vday:-$PDYm9}
+
+#################################################
+# Set up the INPUT and OUTPUT directories
+#################################################
+export COMIN=${COMIN:-/com/verf/${envir}/precip}
+export DCOM=${DCOM:-/dcom/us007003}
+export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
+# COMCCPA is a prefix, not directory name.  Directory is
+#   /com2/ccpa/prod/ccpa.yyyymmdd   
+export COMCCPA=${COMCCPA:-/com2/ccpa/prod/ccpa}
+
+export COMOUT=${COMOUT:-/com/verf/${envir}/precip}
+export COMVSDB=${COMVSDB:-/com/verf/${envir}/vsdb/precip}
+
+# COMIN1/COMIN2 setup is for dev mode.  Define them for non-dev:
+# 
+if [ ! "$RUN_ENVIR" = dev ]    
+then
+  export COMIN1=$COMIN
+  export COMIN2=$COMIN
+fi
+
+if [ ! -d $COMVSDB ]; then
+  mkdir -p -m 775 $COMVSDB
+fi
+if [ ! -d $COMOUT ]; then
+  mkdir -p -m 775 $COMOUT
+fi
+
+env
+
+################################################
+# Run the config file to set up model variables
+################################################
+if [ $retro = Y ]; then
+  . $PARMverf_precip/verf_precip_fss_06h_config.retro
+else
+  . $PARMverf_precip/verf_precip_fss_06h_config
+fi
+
+#######################################################################
+
+$HOMEverf_precip/scripts/exverf_precip_fss_06h.sh.ecf
+
+#######################################################################
+
+cat $pgmout
+
+msg="JOB $job HAS COMPLETED NORMALLY."
+postmsg "$jlogfile" "$msg"
+
+cd $DATAROOT
+
+# 
+cd $WRKDIR
+if [ $RM_DATA = YES ]; then
+  rm -rf $DATA
+fi
+date
+
+

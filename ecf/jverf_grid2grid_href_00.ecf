@@ -1,0 +1,31 @@
+#!/bin/ksh
+#BSUB -J jverf_grid2grid_href_00
+#BSUB -oo /ptmpp1/Ying.Lin/cron.out/verf_g2g_href.%J
+#BSUB -eo /ptmpp1/Ying.Lin/cron.out/verf_g2g_href.%J
+#BSUB -n 1
+#BSUB -q "transfer"
+##BSUB -q "dev"
+#BSUB -W 01:45
+#BSUB -R "span[ptile=1]" -R "rusage[mem=2000]"  -R "affinity[core]"
+#BSUB -cwd /stmpp1/Ying.Lin
+#BSUB -P VERF-T2O
+
+. /u/Ying.Lin/.kshrc
+
+export MP_TASK_AFFINITY=cpu
+export envir=dev
+export RUN_ENVIR=dev
+export cyc=00
+export job=jverf_grid2grid_href_apcp
+
+# CALL executable job script here
+export model_ver=v4.0.0
+#export vday=20170531
+export HOMEverf_href=/meso/save/Ying.Lin/pcpverif/nextjif
+export COM_IN=/ptmpp1/$LOGNAME/verf.dat
+export COM_OUT=${COM_IN}
+export COMVSDB=${COM_OUT}/vsdb
+export DATA_IN=/ptmpp1/$LOGNAME/verf_href/tmpnwprd
+
+$HOMEverf_href/jobs/JVERF_GRID2GRID_HREF
+

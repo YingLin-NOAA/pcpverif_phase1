@@ -1,0 +1,80 @@
+####################################################################################################
+# This data input card defines the input variables for the script to process the 24-hourly model 
+# verification, where the
+#   1st entry: Model Name
+#   2nd entry: Verification length (24h)
+#   3rd entry: Verification grid(s)
+#   4th entry: Verification cycles
+#   5th entry: Precipitation bucket length
+#   6th entry: The model forecast range that is used for the verification
+#   7th entry: Nests
+#
+# Note: if you need to add a new model, please add it to the end of this file.
+#####################################################################################################
+#model|vlen|grids|cycles|blen|frange|nests
+#=========================================
+dgex|24|211 212 218|06 18|6|192|
+gec00|24|211 212 218|00 06 12 18|6|84|
+gfs|24|211 212 218|00 06 12 18|6|180|
+gfs|24|218|06|6|48|west
+gfs|24|218|00 12|6|48|east
+eastnmm|24|218|00 12|3|48|east
+eastarw|24|218|00 12|3|48|east
+easthref|24|218|00 12|3|48|east
+westnmm|24|218|06|3|48|west
+westarw|24|218|06|3|48|west
+westhref|24|218|06|3|48|west
+nam|24|211 212 218|00 12|12|84|
+nam|24|211 212 218|06 18|3|84|
+nam|24|218|00|12|48|west
+nam|24|218|06|3|48|west
+nam|24|218|00 12|12|48|east
+nam|24|218|18|3|48|east
+conusnest|24|218|00 06 12 18|03|60
+conusnest|24|218|00 12|03|48|east
+conusnest|24|218|06|03|48|west
+conusnestx|24|218|00 06 12 18|03|60
+conusnestx|24|218|00 12|03|48|east
+conusnestx|24|218|06|03|48|west
+nssl4arw|24|218|00|36|36
+ndas|24|211 212 218|12|3|24|
+ndassoil|24|211 212 218|12|3|24|
+cmc|24|211 212|00 12|24|48|
+cmcglb|24|211 212|00 12|24|84|
+dwd|24|211 212|00 12|24|72|
+ecmwf|24|211 212|12|24|72|
+jma|24|211 212|00 12|12|84|
+metfr|24|211 212|00 12|24|84|
+ukmo|24|211 212|00 12|12|72|
+st2|24|218|12|24|24|
+st4|24|218|12|24|24|
+namx|24|211 212 218|00 12|3|84|
+namz|24|211 212 218|00 06 12 18|3|84|
+ndasx|24|211 212 218|12|3|24|
+ndasxsoil|24|211 212 218|12|3|24|
+ndasz|24|211 212 218|12|3|24|
+ndaszsoil|24|211 212 218|12|3|24|
+rap12|24|218|12|03|24
+srarwctl|24|212|09 21|03|87
+srarwn1|24|212|09 21|03|87
+srarwn2|24|212|09 21|03|87
+srarwn3|24|212|09 21|03|87
+srarwp1|24|212|09 21|03|87
+srarwp2|24|212|09 21|03|87
+srarwp3|24|212|09 21|03|87
+srnmmctl|24|212|09 21|03|87
+srnmmn1|24|212|09 21|03|87
+srnmmn2|24|212|09 21|03|87
+srnmmn3|24|212|09 21|03|87
+srnmmp1|24|212|09 21|03|87
+srnmmp2|24|212|09 21|03|87
+srnmmp3|24|212|09 21|03|87
+srnmbctl|24|212|09 21|03|87
+srnmbn1|24|212|09 21|03|87
+srnmbn2|24|212|09 21|03|87
+srnmbn3|24|212|09 21|03|87
+srnmbp1|24|212|09 21|03|87
+srnmbp2|24|212|09 21|03|87
+srnmbp3|24|212|09 21|03|87
+srmean|24|212|09 21|24|87
+srfreqm|24|212|09 21|03|87

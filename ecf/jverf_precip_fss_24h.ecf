@@ -1,0 +1,82 @@
+#!/bin/ksh
+#BSUB -J jverf_precip_fss24
+#BSUB -oo /ptmpp1/Ying.Lin/cron.out/fss24.%J
+#BSUB -eo /ptmpp1/Ying.Lin/cron.out/fss24.%J
+#BSUB -cwd /stmpp1/Ying.Lin
+#BSUB -L /bin/sh
+#BSUB -n 1
+#BSUB -q "dev"
+#BSUB -W 3:55
+#BSUB -P VERF-T2O
+
+set -x
+export envir=dev
+export cyc=00
+export RUN_ENVIR=dev
+export retro=N
+export debug=N
+export job=verf_precip_fss_24h
+
+# This script has three optional arguments if run interactively.  WCOSS LSF 
+# (bsub) does not accept arguments in the LSF script, in that case, set up
+# up as environmental variables.  To make this thing more flexible, arg 2 
+# and/or 3 can be either 'debug' or 'retro'.  
+#   var 1:   vday=yyyymmdd (if var 1 not set, $daym1 is used in J-job)
+#   var 2/3: retro (default: no retro)
+#   var 3/2: debug (default: no debug.  In debug mode, do not delete the 
+#            working directory)
+
+# If this script is run with no arguments, it is assumed that it is bsub'd by
+# an upstream job (VERFGEN24, cronmode=Y).  In that case, when the FSS step is 
+# done, in the dev mode and if bsubnext=Y, jobs/JVERF_PRECIP_FSS_24H will 
+#   bsub < .../util.dev/trans_tar_vsdb_for_tempest.ksh and 
+#   bsub < .../util.dev/trans_save_verf.dat.ksh
+# When this job is run with at least one argument, we'll only be running the 
+# FSS 
+export cronmode=Y
+
+if [ $# -ge 1 ]; then
+  export vday=$1
+  export cronmode=N
+fi
+
+if [ $# -ge 2 ]; then
+  if [ $2 = retro ]; then
+    retro=Y
+  elif [ $2 = debug ]; then
+    debug=Y
+  fi
+fi
+
+if [ $# -ge 3 ]; then
+  if [ $3 = retro ]; then
+    retro=Y
+  elif [ $3 = debug ]; then
+    debug=Y
+  fi
+fi
+
+if [ "$RUN_ENVIR" = dev ]; then        ### for dev 
+  # run .profile so that 
+  #   1. the script can find the 'postmsg','startmsg' etc. in the current dir
+  #   2. module ics is loaded to allow us to run copygb in cron jobs
+  . /u/$LOGNAME/.profile
+# ------------------------------------------------------
+# Most frequently made changes: 
+  export HOMEverf_precip=$ZROOT/pcpverif/nextjif
+  export PARMverf_precip=$HOMEverf_precip/parm.dev.wcoss
+  export DATAverf_precip=/ptmpp1/$LOGNAME/verf.dat
+  export COMVSDB=$DATAverf_precip/vsdb
+  export bsubnext=Y   # bsub tar_vsdb_for_tempest, if other conditions are met? 
+  # Location of the 45-day rotating archive:
+  export ARCH45DAY=/meso/save/Ying.Lin/hold45days
+# ------------------------------------------------------
+  # DATAROOT is NCO-speak for 'wrkdir'.
+  export COMROOT=/com               # needed for setpdy,e g. /com/date/t20z
+  export DATAROOT=/stmpp1/$LOGNAME/tmpnwprd
+# export vday=20160207
+else                                   ### for prod/para/test
+  export HOMEverf_precip=/nw${envir}/verf_precip.v.4.0.0
+fi # end of 'is this dev?' 
+
+$HOMEverf_precip/jobs/JVERF_PRECIP_FSS_24H

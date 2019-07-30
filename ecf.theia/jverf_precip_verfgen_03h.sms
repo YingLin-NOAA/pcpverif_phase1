@@ -1,0 +1,80 @@
+#!/bin/ksh -l
+#PBS -o /scratch2/portfolios/NCEPDEV/ptmp/Ying.Lin/output.crons/verfgen03.out
+#PBS -j oe
+#PBS -N verfgen03
+#PBS -A rm
+#PBS -l procs=1
+#PBS -l vmem=1000M
+#PBS -l walltime=0:25:00
+cd $PBS_O_WORKDIR
+
+# Rename PBS output, otherwise it gets appended to the prev day's output file:
+PBSODIR=/scratch2/portfolios/NCEPDEV/ptmp/Ying.Lin/output.crons
+timestamp=`date +%Y%m%d%H%M`
+mv $PBSODIR/verfgen03.out $PBSODIR/verfgen03.$timestamp
+
+export envir=dev
+export cyc=00
+export vhour=03h
+export job=verf_precip_verfgen_03h
+export RUN_ENVIR=dev
+export retro=N
+export debug=N
+
+export HOMEverf_precip=/scratch2/portfolios/NCEPDEV/meso/save/$LOGNAME/verif/nextjif
+export DATAverf_precip=/scratch2/portfolios/NCEPDEV/ptmp/$LOGNAME/verf.dat
+export COMHRLY=/scratch2/portfolios/NCEPDEV/ptmp/Ying.Lin/com/hourly/prod
+export COMVSDB=$DATAverf_precip/vsdb
+#export COMHRLY=/scratch2/portfolios/NCEPDEV/rstprod/com/hourly/prod
+export WRKDIR=/scratch2/portfolios/NCEPDEV/stmp/$LOGNAME/tmpnwprd
+
+# Specify 'nwprod' for Zeus:
+export NWPROD=/scratch2/portfolios/NCEPDEV/rstprod/nwprod
+
+# Zeus does not have a working /nwprod/util/exec/ndate
+#                          nor /nwprod/util/exec/copygb
+export ndate=/home/Eric.Rogers/bin/ndate
+export copygb=/home/Eric.Rogers/bin/copygb
+
+# Zeus's /nwprod/util/exec/wgrib does not work.  We need to define WGRIBpath
+# (and pass it on to EXECutil in the JOBS script) for wwgrib. 
+export WGRIBpath=/scratch2/portfolios/NCEPDEV/meso/save/Eric.Rogers/nwprod_LE/exec
+# This script has three optional arguments:
+#   arg 1: yyyymmdd (verifying period is the 24h ending 12Z yyyymmdd). 
+#     If no arg 1, verification is done for 3-hourly periods ending
+#     at 00, 03, 06, ... 21 UTC yesterday.  
+#     Note about the timing: for prod/para on ccs/wcoss, 3-hourly verif is
+#       done on the early morning of $day for $daym2.  Since the StageII prod
+#       on Zeus (/scratch2/portfolios/NCEPDEV/rstprod/com/hourly/prod) is only
+#       kept for the past 2 days [$daym1 and $day]), and it seems to take a
+#       few hours for the latest update to the data on the prod machine to be
+#       sync'd to Zeus, we'll do this at ~20Z. Actually this won't work - we
+#       need data for 22-23Z from $daym2!
+#  
+#   arg 2/3: retro (use parm/verf_precip_24h_config.retro)
+#              default: use verf_precip_24h_config
+#   arg 3/2: debug (if in debug mode, do not delete the working directory)
+#
+# arg #1: yyyymmdd as $day 
+if [ $# -ge 1 ]; then
+  export vday=$1
+fi
+
+# arg #2: optional retro mode: 
+if [ $# -ge 2 ]; then
+  if [ $2 = retro ]; then
+    retro=Y
+  elif [ $2 = debug ]; then
+    debug=Y
+  fi
+fi
+
+if [ $# -ge 3 ]; then
+  if [ $3 = retro ]; then
+    retro=Y
+  elif [ $3 = debug ]; then
+    debug=Y
+  fi
+fi
+
+$HOMEverf_precip/jobs/JVERF_PRECIP_VERFGEN_03H
