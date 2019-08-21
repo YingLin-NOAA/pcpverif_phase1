@@ -61,7 +61,7 @@ if [ "$RUN_ENVIR" = dev ]; then        ### for dev
   #   1. the script can find the 'postmsg','startmsg' etc. in the current dir
   #   2. module ics is loaded to allow us to run copygb in cron jobs
   . /u/$LOGNAME/.profile
-  export COMCCPA=/com2/ccpa/prod/ccpa
+  export COMCCPA=/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa
 # ------------------------------------------------------
 # Most frequently made changes: 
   export HOMEverf_precip=$ZROOT/pcpverif/nextjif

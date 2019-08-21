@@ -61,7 +61,7 @@ if [ "$RUN_ENVIR" = dev ]; then        ### for dev
   export PARMverf_precip=$HOMEverf_precip/parm.dev.wcoss
   export DATAverf_precip=/ptmpp1/$LOGNAME/verf.dat
   export COMVSDB=$DATAverf_precip/vsdb
-  export COMCCPA=/com2/ccpa/prod/ccpa   # after CCPA upgrade
+  export COMCCPA=/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa
 # ------------------------------------------------------
   # DATAROOT is NCO-speak for 'wrkdir'.
   export DATAROOT=/stmpp1/$LOGNAME/tmpnwprd

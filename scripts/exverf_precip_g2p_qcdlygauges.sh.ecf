@@ -9,7 +9,7 @@ if [ $# = 1 ]; then
   vday=$1
 fi
 
-gaugeqcdir=/com/hourly/prod/gaugeqc
+gaugeqcdir= /gpfs/dell1/nco/ops/com/hourly/prod/gaugeqc
 gaugefile=$gaugeqcdir/usa-dlyprcp-$vday
 
 evalU=$gaugeqcdir/$vday.evalU

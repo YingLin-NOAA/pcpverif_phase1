@@ -78,7 +78,7 @@ EOF
 fi
 
 # Copy over the PR Stage IV image (from para for now):
-cp /com2/pcpanl/prod/pcpanl.$vday/st4_pr.${vday}12.24h.gif .
+cp /gpfs/dell2/nco/ops/com/pcpanl/prod/pcpanl.$vday/st4_pr.${vday}12.24h.gif .
 if [ -s st4_pr.${vday}12.24h.gif -a -s cmorph.$vdate.pr.gif ]; then
    let icnt=icnt+1
    cat >> index.html <<EOF 

@@ -165,8 +165,8 @@ export COMIN1=$COMIN
 export DCOM=${DCOM:-/dcom/us007003}
 export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
 # COMCCPA is a prefix, not directory name.  Directory is
-#   /com2/ccpa/prod/ccpa.yyyymmdd
-export COMCCPA=${COMCCPA:-/com2/ccpa/prod/ccpa}
+# /gpfs/dell1/nco/ops/com/ccpa/prod/ccpa.$yyyymmdd
+export COMCCPA=${COMCCPA:/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa}
 
 export COMOUT=${COMOUT:-/com/verf/${envir}/precip}
 export COMVSDB=${COMVSDB:-/com/verf/${envir}/vsdb/precip}

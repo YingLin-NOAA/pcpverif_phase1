@@ -34,18 +34,6 @@ mname=${mon[mm-1]}
 cp $COMINpcpanl/pcpanl.$vday/st2ml.${vday}12.24h.gif .
 cp $COMINpcpanl/pcpanl.$vday/st4.${vdate}.24h.gif .
 
-if [ $RUN_ENVIR = dev ]; then 
-  cp /com2/pcpanl/para/pcpanl.$vday/st2ml.${vday}12.24h.gif st2mlx.gif
-  err=$?
-  if [ $err -ne 0 ]; then
-    scp Ying.Lin@${PRODWCOSS}:/com2/pcpanl/para/pcpanl.$vday/st2ml.${vday}12.24h.gif st2mlx.gif
-  fi
-  # load imagemagick module in .profile.  Use 'convert' below instead of
-  # /usr/bin/convert (w/o the module LSF job cannot find /usr/bin/convert)
-  convert st2mlx.gif -pointsize 25 -annotate +60+350 'ST2x' st2mlx.${vday}12.24h.gif 
-fi
-
-
 # Now create the index file:
 cat > index.html <<EOF
 <HTML>

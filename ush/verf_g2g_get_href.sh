@@ -10,7 +10,7 @@ export wgrib=${wgrib:-/nwprod/util/exec/wgrib}
 modnam=$1
 
 if [ $modnam = ccpa ] ; then
-  COMCCPA=${COMCCPA:-/com2/ccpa/prod/ccpa}
+  COMCCPA=${COMCCPA:-/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa}
    cycles="00 06 12 18"
    for cyc in $cycles ; do
      ccpa=$COMCCPA.${vday}/$cyc/ccpa.t${cyc}z.03h.hrap.conus.gb2
@@ -20,7 +20,8 @@ fi
     
 if [ $modnam = reference2 ] ; then
 
-  COMNAM=${COMNAM:-/com2/nam/prod/nam}
+#  COMNAM=${COMNAM:-/com2/nam/prod/nam}
+  COMNAM=${COMNAM:-/gpfs/dell1/nco/ops/com/nam/prod/nam}
   cycles="00 06 12 18"
 
   for cyc in $cycles ; do

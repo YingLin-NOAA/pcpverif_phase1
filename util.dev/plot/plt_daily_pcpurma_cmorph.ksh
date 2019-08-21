@@ -13,7 +13,7 @@ fi
 
 wrkdir=/stmpp1/Ying.Lin/pcpurma_cmorph_daily_sum
 
-anlpfx=/com2/urma/prod/pcpurma
+anlpfx=/gpfs/dell2/nco/ops/com/urma/prod/pcpurma
 
 if [ -d $wrkdir ]; then
   rm -f $wrkdir/*

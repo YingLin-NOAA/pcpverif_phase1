@@ -53,7 +53,7 @@ then
   export COMOUT=/com/verf/${envir}/precip
   export COMVSDB=/com/verf/${envir}/vsdb/precip
   export COMHRLY=/com/hourly/prod
-  export COMCCPA=/com2/ccpa/prod/ccpa
+  export COMCCPA=/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa
 
   export SENDCOM=YES
   export SENDSMS=YES
@@ -74,7 +74,7 @@ then
   export COMOUT=/com/verf/${envir}/precip
   export COMVSDB=/com/verf/${envir}/vsdb/precip
   export COMHRLY=/com/hourly/prod
-  export COMCCPA=/com2/ccpa/prod/ccpa
+  export COMCCPA=/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa
 
   export SENDCOM=YES
   export SENDSMS=YES
