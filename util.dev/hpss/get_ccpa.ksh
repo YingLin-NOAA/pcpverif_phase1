@@ -8,8 +8,14 @@ cd $datadir
 yyyy=${day:0:4}
 yyyymm=${day:0:6}
 
+if [ $day -ge 20190812 ]; then
+  ccpatar=gpfs_dell1_nco_ops_com_ccpa_prod_ccpa.$day.tar
+else
+  ccpatar=com2_ccpa_prod_ccpa.$day.tar
+fi
+
 hpssdir=/NCEPPROD/hpssprod/runhistory/rh$yyyy/$yyyymm/$day
-htar xvf $hpssdir/com2_ccpa_prod_ccpa.$day.tar \
+htar xvf $hpssdir/$ccpatar \
   ./00/ccpa.t00z.06h.hrap.conus \
   ./06/ccpa.t06z.06h.hrap.conus \
   ./12/ccpa.t12z.06h.hrap.conus \
