@@ -40,7 +40,7 @@ if [ $# -ge 1 ]; then
   export cronmode=N
 fi
 
-export vday=20190805
+export vday=20190813
 
 if [ $# -ge 2 ]; then
   if [ $2 = retro ]; then
@@ -63,7 +63,8 @@ if [ "$RUN_ENVIR" = dev ]; then        ### for dev
   #   1. the script can find the 'postmsg','startmsg' etc. in the current dir
   #   2. module ics is loaded to allow us to run copygb in cron jobs
   . /u/$LOGNAME/.profile
-  export COMCCPA=/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa
+#  export COMCCPA=/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa
+  export COMCCPA=/gpfs/dell1/nco/ops/com/ccpa/para/ccpa
 # export COMCCPA=/ptmpp1/Ying.Lin/ccpa/ccpa
 # ------------------------------------------------------
 # Most frequently made changes: 
