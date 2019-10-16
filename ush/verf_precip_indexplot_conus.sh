@@ -62,7 +62,7 @@ for fhr in 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 
 do
   for model in nam namx namb \
                conusnest fv3nest fv3sar fv3sarx fv3sarda gfs gfsv14 nssl4arw \
-               rap hrrr \
+               rap rapx hrrr hrrrx \
                conusnmmb conusarw conusarw2 firewxcs \
                cmc cmcglb dwd ecmwf jma metfr ukmo hpc medley \
                srmean srmeanx srfreqm srfreqmx \

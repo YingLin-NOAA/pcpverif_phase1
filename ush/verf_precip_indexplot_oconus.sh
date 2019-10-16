@@ -108,7 +108,7 @@ do
 
   for fhr in ` echo $fhours`
   do
-    for model in nam namx gfs gfsv14 fv3gfs prnest prnestx prnmmb prarw prarw2 hinest hinestx hinmmb hiarw hiarw2 aknest aknestx alaskarr aknmmb akarw akarw2 hrrrak rap firewxak
+    for model in nam namx gfs gfsv14 fv3gfs prnest prnestx prnmmb prarw prarw2 hinest hinestx hinmmb hiarw hiarw2 aknest aknestx alaskarr aknmmb akarw akarw2 hrrrak hrrrakx rap rapx firewxak
     do
       if [ -e $model.v${vday}12.${fhr}h.$region.gif ]; then
         let icnt=icnt+1
