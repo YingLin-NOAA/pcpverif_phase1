@@ -40,7 +40,7 @@ if [ $# -ge 1 ]; then
   export cronmode=N
 fi
 
-export vday=20190917
+export vday=20191015
 
 if [ $# -ge 2 ]; then
   if [ $2 = retro ]; then
