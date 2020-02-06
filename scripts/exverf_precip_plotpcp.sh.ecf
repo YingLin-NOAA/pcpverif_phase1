@@ -36,7 +36,7 @@ if [ $domain = conus ]; then
   tar xvf $COMIN/modpcpsum.$vday.gz
 
   # 2018/07/19: get ukmo from prod modpcpsum, to plot with python.  
-  prdmodpcpsum=/com/verf/prod/precip.$vday/modpcpsum.$vday.gz
+  prdmodpcpsum=/gpfs/dell1/nco/ops/com/verf/prod/precip.$vday/modpcpsum.$vday.gz
   tar xvf $prdmodpcpsum `tar tf $prdmodpcpsum | grep ukmo`
 
   if [ $RUN_ENVIR = dev -a $machine = wcoss ]; then
@@ -50,7 +50,7 @@ if [ $domain = conus ]; then
 
     # Copy over the production gif files.
     if [ $USEPRD4PLT = YES ]; then
-      prodplottar=/com/verf/prod/precip.${vday}/pcpplot_${vday}12.tar
+      prodplottar=/gpfs/dell1/nco/ops/com/verf/prod/precip.${vday}/pcpplot_${vday}12.tar
       if [ -s $prodplottar ]; then
         tar xvf $prodplottar
       else

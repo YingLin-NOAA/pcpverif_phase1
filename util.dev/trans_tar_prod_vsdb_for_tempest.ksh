@@ -72,12 +72,12 @@ if [ $# -eq 2 ]; then
 fi
 
 ARCHDIR=$ZROOT/hold45days
-PRODDIR=/com/verf/prod/vsdb/precip
+PRODDIR=/gpfs/dell1/nco/ops/com/verf/prod/vsdb/precip
 nday=1
 
 cd $PRODDIR
 
-# 2017/11/13: use para HREF for now. 
+# 
 while [ $nday -le $nback ];
 do
   day=`/nwprod/util/ush/finddate.sh $today d-$nday`
