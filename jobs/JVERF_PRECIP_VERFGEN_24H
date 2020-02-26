@@ -165,7 +165,7 @@ export vday=${vday:-$PDYm1}
 # Set up the INPUT and OUTPUT directories
 #################################################
 export COMIN1=${COMIN1:-/com/verf/${envir}/precip}
-export COMIN2=${COMIN2:-/com/verf/${envir}/precip}
+export COMIN2=/gpfs/dell1/nco/ops/com/verf/prod/precip
 export COMIN=${COMIN:-/com/verf/${envir}/precip}
 export DCOM=${DCOM:-/dcom/us007003}
 export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
