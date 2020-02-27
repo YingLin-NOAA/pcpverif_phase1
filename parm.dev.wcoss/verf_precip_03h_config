@@ -1,5 +1,5 @@
 export run_gfs=0
-export run_gfsv14=1
+export run_gfsv14=0
 export run_fv3gfs=0
 export run_fv3nest=0
 export run_fv3sar=1

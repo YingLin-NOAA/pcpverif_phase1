@@ -1,6 +1,6 @@
 export run_gfs=1
-export run_gfsv14=1
-export run_fv3gfs=1
+export run_gfsv14=0
+export run_fv3gfs=0
 export run_nam=1
 export run_namx=0
 export run_aknest=1
